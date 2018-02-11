@@ -39,7 +39,7 @@
             <if test="name!=null and name!=''">and NAME=#{name}</if>
             <if test="loginName!=null and loginName!=''">and LOGINNAME=#{loginName}</if>
         </where>
-        order by id desc limit #{startRow},#{endRow}
+        order by id desc
     </select>
 
     <select id="selectUserCount" resultType="int">
