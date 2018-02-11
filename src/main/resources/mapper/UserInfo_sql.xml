@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为UserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.xujd.dao.UserInfoDao">
+    <insert id="insertUser" parameterType="UserInfo">
+        INSERT INTO USERINFO(NAME,AGE,LOGINNAME,PASSWORD)VALUES(#{name},#{age},#{loginName},#{password})
+    </insert>
+
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM USERINFO WHERE ID=#{id}
+    </delete>
+    <update id="updateUser" parameterType="UserInfo">
+        UPDATE USERINFO
+        <set>
+            <if test="name!=null and name!=''">NAME =#{name},</if>
+            <if test="age!=null and age!=''">AGE =#{age},</if>
+            <if test="loginName!=null and loginName!=''">LOGINNAME =#{loginName},</if>
+            <if test="password!=null and password!=''">PASSWORD =#{password}</if>
+        </set>
+        where ID=#{id}
+    </update>
+
+    <select id="selectUserById" resultType="UserInfo" parameterType="int">
+        SELECT * FROM USERINFO WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="UserInfo">
+        SELECT * FROM USERINFO order by id desc
+    </select>
+
+    <select id="selectUserByLoginName" parameterType="java.lang.String" resultType="UserInfo">
+        SELECT * FROM USERINFO WHERE LOGINNAME=#{loginName}
+    </select>
+
+    <select id="selectUserByParams" resultType="UserInfo" parameterType="UserInfo">
+        SELECT * FROM USERINFO
+        <where>
+            <if test="name!=null and name!=''">and NAME=#{name}</if>
+            <if test="loginName!=null and loginName!=''">and LOGINNAME=#{loginName}</if>
+        </where>
+        order by id desc limit #{startRow},#{endRow}
+    </select>
+
+    <select id="selectUserCount" resultType="int">
+        select count(*) from USERINFO
+    </select>
+</mapper>
